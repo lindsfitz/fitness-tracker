@@ -27,7 +27,16 @@ app.get('/stats', (req,res) => {
 })
 
 app.get('/api/workouts', (req,res) => {
-  db.Workout.find({})
+  // db.Workout.find({})
+  db.Workout.aggregate([
+    
+    {
+      $addFields: {
+        totalDuration: {
+          $sum: '$exercises.duration'}}
+    }
+
+  ])
   .then(dbWorkout => {
     res.json(dbWorkout)
   })
